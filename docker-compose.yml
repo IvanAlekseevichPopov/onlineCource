@@ -19,7 +19,7 @@ services:
             - ./var/log:/var/log/nginx
             - ./docker/nginx/symfony.conf:/etc/nginx/sites-available/symfony.conf
     db:
-        image: postgres:10
+        image: postgres:12
         ports:
             - "5432:5432"
         volumes:
