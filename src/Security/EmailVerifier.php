@@ -15,7 +15,7 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class EmailVerifier
 {
-    private const CONFIRM_ROUTE = 'app_verify_email'; //TODO env parameters
+    private const CONFIRM_ROUTE = 'api_user_registration_confirm'; //TODO env parameters
 
     private $verifyEmailHelper;
     private $mailer;
@@ -39,7 +39,7 @@ class EmailVerifier
 
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             self::CONFIRM_ROUTE,
-            $user->getId(),
+            $user->getId()->toString(),
             $user->getEmail()
         );
 

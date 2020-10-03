@@ -28,10 +28,10 @@ services:
             - POSTGRES_DB
             - POSTGRES_USER
             - POSTGRES_PASSWORD
-#    mailer:
-#        image: schickling/mailcatcher
-#        ports:
-#            - "1080:1080"
+    mailer:
+        image: schickling/mailcatcher
+        ports:
+            - "1080:1080"
 #    db_test:
 #        image: postgres:10
 #        ports:
