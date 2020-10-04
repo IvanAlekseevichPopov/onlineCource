@@ -31,24 +31,21 @@ class EmailVerifier
     //TODO divide on two services MAILER and confirmer
     public function sendEmailConfirmation(UserInterface $user): void
     {
-        $email = (new TemplatedEmail())
-            ->from(new Address('robot@onlineCoure-domain.com', 'onlineCource robot')) //TODO from envs
-            ->to($user->getEmail())
-            ->subject('Please Confirm your Email')
-            ->htmlTemplate('registration/confirmation_email.html.twig'); //TODO from params
-
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             self::CONFIRM_ROUTE,
             $user->getId()->toString(),
             $user->getEmail()
         );
 
-        $context = $email->getContext();
-        dump($context);
-        $context['signedUrl'] = $signatureComponents->getSignedUrl();
-        $context['expiresAt'] = $signatureComponents->getExpiresAt();
-
-        $email->context($context);
+        $email = (new TemplatedEmail())
+            ->from(new Address('robot@onlineCoure-domain.com', 'onlineCource robot')) //TODO from envs
+            ->to($user->getEmail())
+            ->subject('Please Confirm your Email')
+            ->htmlTemplate('mail/registration_confirm.html.twig') //TODO from params
+            ->context([
+                'signedUrl' => $signatureComponents->getSignedUrl(),
+                'expiresAt' => $signatureComponents->getExpiresAt(),
+            ]);
 
         $this->mailer->send($email);
     }
