@@ -30,7 +30,7 @@ class PasswordValidator extends ConstraintValidator
         if (strlen($value) < self::MIN_LENGTH) {
             $this->context
                 ->buildViolation(Password::TOO_SHORT_MESSAGE)
-                ->setParameter('{{ length }}', (string)self::MIN_LENGTH)
+                ->setParameter('{{ length }}', (string) self::MIN_LENGTH)
                 ->addViolation();
         }
 

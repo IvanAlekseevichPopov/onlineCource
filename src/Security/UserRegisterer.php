@@ -6,7 +6,6 @@ namespace App\Security;
 
 use App\Entity\User;
 use App\Model\Request\RegistrationRequestInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

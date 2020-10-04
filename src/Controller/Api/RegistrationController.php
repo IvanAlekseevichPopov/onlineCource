@@ -22,8 +22,6 @@ class RegistrationController extends AbstractController
      *     name="api_user_registration",
      *     methods={"POST"}
      * )
-     * @param Request        $request
-     * @param UserRegisterer $registerer
      *
      * @return FormInterface|null
      */
@@ -46,7 +44,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route(
      *     "/registration/email",
-     *      name="api_user_registration_confirm"
+     *     name="api_user_registration_confirm"
      * )
      */
     public function confirmRegistration(Request $request): Response

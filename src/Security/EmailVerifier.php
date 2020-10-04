@@ -49,6 +49,7 @@ class EmailVerifier
 
         $this->mailer->send($email);
     }
+
 //
 //
 //    public function sendEmailConfirmation(string $verifyEmailRouteName, UserInterface $user, TemplatedEmail $email): void

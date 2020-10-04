@@ -6,7 +6,6 @@ namespace App\Form;
 
 use App\Constraint\Password;
 use App\Constraint\Recaptcha;
-use App\Entity\User;
 use App\Model\Request\RegistrationRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
