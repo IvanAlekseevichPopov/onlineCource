@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Entity\ConfirmationToken;
 use App\Form\RegistrationRequestType;
 use App\Model\Request\RegistrationRequest;
+use App\Security\EmailVerifier;
 use App\Security\UserRegisterer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -43,12 +45,23 @@ class RegistrationController extends AbstractController
 
     /**
      * @Route(
-     *     "/registration/email",
+     *     "/registration/{token}",
      *     name="api_user_registration_confirm"
      * )
+     * @param ConfirmationToken $token
+     * @param EmailVerifier     $verifier
+     * @return Response
      */
-    public function confirmRegistration(Request $request): Response
+    public function confirmRegistration(ConfirmationToken $token, UserRegisterer $registerer): Response
     {
+        try {
+            $user = $registerer->confirmRegistration($token);
+            //TODO authorize
+        }catch (//TODO exception) {
+            return error
+        }
+
+
 //        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 //
 //        // validate email confirmation link, sets User::isVerified=true and persists
