@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Security\Guard\AuthenticatorInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -48,19 +48,17 @@ class RegistrationController extends AbstractController
      *     "/registration/{token}",
      *     name="api_user_registration_confirm"
      * )
-     * @param ConfirmationToken $token
-     * @param EmailVerifier     $verifier
-     * @return Response
+     *
+     * @param EmailVerifier $verifier
      */
-    public function confirmRegistration(ConfirmationToken $token, UserRegisterer $registerer): Response
+    public function confirmRegistration(ConfirmationToken $token, UserRegisterer $registerer, AuthenticatorInterface $authenticator): Response
     {
-        try {
-            $user = $registerer->confirmRegistration($token);
-            //TODO authorize
-        }catch (//TODO exception) {
-            return error
-        }
-
+//        try {
+//            $user = $registerer->confirmRegistration($token);
+//            $authenticator->createAuthenticatedToken()
+//        }catch (//TODO exception) {
+//            return error
+//        }
 
 //        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 //

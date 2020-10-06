@@ -6,7 +6,6 @@ namespace App\Security;
 
 use App\Entity\ConfirmationToken;
 use App\Entity\User;
-use App\Model\Request\RegistrationConfirmRequestInterface;
 use App\Model\Request\RegistrationRequestInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -47,13 +46,12 @@ class UserRegisterer
 
     public function confirmRegistration(ConfirmationToken $token): User
     {
-        if($token->getCreatedAt()->modify('+ 3 days') > new \DateTimeImmutable('')) {
+        if ($token->getCreatedAt()->modify('+ 3 days') > new \DateTimeImmutable('')) { //TODO 3 days from config
             // TODO exception
         }
 
         $user = $token->getUser();
         $this->emailVerifier->handleEmailConfirmation($user);
-        //TODO send greeting email
 
         return $user;
     }
