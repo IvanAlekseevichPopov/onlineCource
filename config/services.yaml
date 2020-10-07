@@ -34,3 +34,17 @@ services:
     App\EventSubscriber\MigrationEventSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    App\Model\EmailVerifierConfig: #TODO from envs
+        arguments:
+            $confirmationTemplate: 'mail/registration_confirm.html.twig'
+            $welcomeTemplate: 'mail/registration_confirm.html.twig'
+            $confirmationSubject: 'Please Confirm your Email'
+            $welcomeSubject: 'Please Confirm your Email'
+            $expires: '+ 3 days'
+            $confirmationRoute: ''
+
+    Symfony\Component\Mime\Address:
+        arguments:
+            - 'robot@onlineCoure-domain.com'
+            - 'onlineCource robot'

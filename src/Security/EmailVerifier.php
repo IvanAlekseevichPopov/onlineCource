@@ -5,52 +5,57 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Entity\ConfirmationToken;
+use App\Entity\User;
+use App\Model\EmailVerifierConfig;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class EmailVerifier
 {
     private const CONFIRM_ROUTE = 'api_user_registration_confirm'; //TODO env parameters
 
-    private $mailer;
-    private $entityManager;
+    private MailerInterface $mailer;
+    private EntityManagerInterface $entityManager;
+    private RouterInterface $router;
+    private EmailVerifierConfig $config;
 
-    public function __construct(MailerInterface $mailer, EntityManagerInterface $manager)
+    public function __construct(MailerInterface $mailer, EntityManagerInterface $manager, RouterInterface $router, EmailVerifierConfig $config)
     {
         $this->mailer = $mailer;
         $this->entityManager = $manager;
+        $this->router = $router;
+        $this->config = $config;
     }
 
-    //TODO divide on two services MAILER and confirmer
     public function sendEmailConfirmation(ConfirmationToken $token): void
     {
-
         $email = (new TemplatedEmail())
-            ->from(new Address('robot@onlineCoure-domain.com', 'onlineCource robot')) //TODO from envs
+            ->from($this->config->getAddress())
             ->to($token->getUser()->getEmail())
-            ->subject('Please Confirm your Email')
-            ->htmlTemplate('mail/registration_confirm.html.twig') //TODO from params
+            ->subject($this->config->getConfirmationSubject())
+            ->htmlTemplate($this->config->getConfirmationTemplate())
             ->context([
-                'token' => $token,
-                'expiresAt' => new \DateTimeImmutable('+ 3 days') //TODO from config
+                'confirmationUrl' => $this->router->generate(self::CONFIRM_ROUTE, ['token' => $token->getId()], RouterInterface::ABSOLUTE_URL),
+                'expiresAt' => $this->config->getExpires(),
             ]);
 
         $this->mailer->send($email);
     }
 
-
-    /**
-     * @param ConfirmationToken $token
-     */
-    public function handleEmailConfirmation(UserInterface $user): void
+    public function handleEmailConfirmation(User $user): void //TODO userinterface with email
     {
-        //TODO send email with greeting
+        $email = (new TemplatedEmail())
+            ->from($this->config->getAddress())
+            ->to($user->getEmail())
+            ->subject($this->config->getWelcomeSubject())
+            ->htmlTemplate($this->config->getWelcomeTemplate())
+            ->context([
+                'user' => $user,
+            ]);
+
+        $this->mailer->send($email);
     }
 }
