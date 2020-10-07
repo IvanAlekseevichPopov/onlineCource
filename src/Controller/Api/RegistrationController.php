@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Entity\ConfirmationToken;
-use App\Form\RegistrationRequestType;
+use App\Exception\Registration\RegistrationException;
+use App\Form\Request\RegistrationRequestType;
 use App\Model\Request\RegistrationRequest;
 use App\Security\EmailVerifier;
 use App\Security\UserRegisterer;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Guard\AuthenticatorInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -46,19 +47,25 @@ class RegistrationController extends AbstractController
     /**
      * @Route(
      *     "/registration/{token}",
-     *     name="api_user_registration_confirm"
+     *     name="api_user_registration_confirm",
+     *     methods={"POST"}
      * )
      *
-     * @param EmailVerifier $verifier
+     * @return null
      */
-    public function confirmRegistration(ConfirmationToken $token, UserRegisterer $registerer, AuthenticatorInterface $authenticator): Response
+    public function confirmRegistration(ConfirmationToken $token, UserRegisterer $registerer, AuthenticationSuccessHandler $authenticationSuccessHandler)
     {
-//        try {
-//            $user = $registerer->confirmRegistration($token);
+        //TODO remove token after confirmation
+        try {
+            $user = $registerer->confirmRegistration($token);
+            //TODO auth user here
+            dump('success confirmatio todo');
+
+            return $authenticationSuccessHandler->handleAuthenticationSuccess($user);
 //            $authenticator->createAuthenticatedToken()
-//        }catch (//TODO exception) {
-//            return error
-//        }
+        } catch (RegistrationException $exception) {
+            throw new BadRequestException($exception);
+        }
 
 //        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 //

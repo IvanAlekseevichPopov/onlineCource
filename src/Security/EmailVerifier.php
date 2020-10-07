@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class EmailVerifier
 {
-    private const CONFIRM_ROUTE = 'api_user_registration_confirm'; //TODO env parameters
+    private const CONFIRM_ROUTE = 'api_user_registration_confirm'; //TODO env parameters && to frontend route
 
     private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;

@@ -20,7 +20,7 @@ class ConfirmationToken
     private UuidInterface $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="registrationConfirmToken")
+     * @ORM\OneToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
     private User $user;

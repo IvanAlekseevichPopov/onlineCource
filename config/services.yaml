@@ -10,6 +10,8 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $confirmTokenLifeTime: '+ 3 days'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -38,10 +40,9 @@ services:
     App\Model\EmailVerifierConfig: #TODO from envs
         arguments:
             $confirmationTemplate: 'mail/registration_confirm.html.twig'
-            $welcomeTemplate: 'mail/registration_confirm.html.twig'
+            $welcomeTemplate: 'mail/registration_completed.html.twig'
             $confirmationSubject: 'Please Confirm your Email'
             $welcomeSubject: 'Please Confirm your Email'
-            $expires: '+ 3 days'
             $confirmationRoute: ''
 
     Symfony\Component\Mime\Address:

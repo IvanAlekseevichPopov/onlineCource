@@ -22,14 +22,14 @@ class EmailVerifierConfig
 
     private string $confirmationRoute;
 
-    public function __construct(Address $address, string $confirmationTemplate, string $welcomeTemplate, string $confirmationSubject, string $welcomeSubject, string $expires, string $confirmationRoute)
+    public function __construct(Address $address, string $confirmationTemplate, string $welcomeTemplate, string $confirmationSubject, string $welcomeSubject, string $confirmTokenLifeTime, string $confirmationRoute)
     {
         $this->address = $address;
         $this->confirmationTemplate = $confirmationTemplate;
         $this->welcomeTemplate = $welcomeTemplate;
         $this->confirmationSubject = $confirmationSubject;
         $this->welcomeSubject = $welcomeSubject;
-        $this->expires = $expires;
+        $this->expires = $confirmTokenLifeTime;
         $this->confirmationRoute = $confirmationRoute;
     }
 

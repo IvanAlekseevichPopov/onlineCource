@@ -20,4 +20,20 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    public function findByLower(array $properties)
+    {
+        $qb = $this->createQueryBuilder('user');
+
+        foreach ($properties as $name => $value) {
+            $qb
+                ->andWhere($qb->expr()->eq($qb->expr()->lower("user.{$name}"), ":{$name}"))
+                ->setParameter($name, $value);
+        }
+
+        return $qb
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
