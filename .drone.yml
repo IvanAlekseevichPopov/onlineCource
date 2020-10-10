@@ -2,7 +2,40 @@ kind: pipeline
 name: default
 
 steps:
-  - name: install
-    image: composer
-    commands:
-      - composer install
+  - name: build php docker
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: ivanpopov/online-cource-empty
+      dockerfile: docker/php/Dockerfile
+#    commands:
+#      - docker build --no-cache -t online_cource:${DRONE_COMMIT} -f docker/php/Dockerfile .
+#
+#  - name: install dependencies
+#    image: online_cource:${DRONE_COMMIT}
+#    commands:
+#      - composer install
+#
+#volumes:
+#  - name: dockersock
+#    host:
+#      path: /var/run/docker.sock
+#kind: pipeline
+#name: default
+#
+#steps:
+#  - name: test
+#    image: plugins/docker
+##    volumes:
+##      - name: dockersock
+##        path: /var/run/docker.sock
+#    commands:
+#      - docker ps -a
+#
+#volumes:
+#  - name: dockersock
+#    host:
+#      path: /var/run/docker.sock
