@@ -8,7 +8,6 @@ use App\Entity\ConfirmationToken;
 use App\Exception\Registration\RegistrationException;
 use App\Form\Request\RegistrationRequestType;
 use App\Model\Request\RegistrationRequest;
-use App\Security\EmailVerifier;
 use App\Security\UserRegisterer;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,32 +54,28 @@ class RegistrationController extends AbstractController
      */
     public function confirmRegistration(ConfirmationToken $token, UserRegisterer $registerer, AuthenticationSuccessHandler $authenticationSuccessHandler)
     {
-        //TODO remove token after confirmation
         try {
             $user = $registerer->confirmRegistration($token);
-            //TODO auth user here
-            dump('success confirmatio todo');
 
+            //TODO DTO instead of raw data
             return $authenticationSuccessHandler->handleAuthenticationSuccess($user);
-//            $authenticator->createAuthenticatedToken()
         } catch (RegistrationException $exception) {
             throw new BadRequestException($exception);
         }
+    }
 
-//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-//
-//        // validate email confirmation link, sets User::isVerified=true and persists
-//        try {
-//            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-//        } catch (VerifyEmailExceptionInterface $exception) {
-//            $this->addFlash('verify_email_error', $exception->getReason());
-//
-//            return $this->redirectToRoute('app_register');
-//        }
-//
-//        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-//        $this->addFlash('success', 'Your email address has been verified.');
-//
-//        return $this->redirectToRoute('app_register');
+    /**
+     * @Route(
+     *     "/user/self",
+     *     name="api_user_self_info",
+     *     methods={"GET"}
+     * )
+     *
+     * @return null
+     */
+    public function getUserInfo()
+    {
+        //TODO DTO
+        return $this->getUser();
     }
 }

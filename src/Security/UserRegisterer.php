@@ -54,6 +54,9 @@ class UserRegisterer
         $user = $token->getUser();
         $this->emailVerifier->handleEmailConfirmation($user);
 
+        $this->entityManager->remove($token);
+        $this->entityManager->flush();
+
         return $user;
     }
 }
