@@ -11,13 +11,11 @@ steps:
         from_secret: docker_password
       repo: ivanpopov/online-cource-empty
       dockerfile: docker/php/Dockerfile
-#    commands:
-#      - docker build --no-cache -t online_cource:${DRONE_COMMIT} -f docker/php/Dockerfile .
-#
-#  - name: install dependencies
-#    image: online_cource:${DRONE_COMMIT}
-#    commands:
-#      - composer install
+
+  - name: install dependencies
+    image: ivanpopov/online-cource-empty
+    commands:
+      - composer install
 #
 #volumes:
 #  - name: dockersock
