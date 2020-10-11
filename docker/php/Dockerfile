@@ -33,4 +33,4 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
 FROM scratch as prod
-COPY ./* /var/www/html/
+COPY ./ /var/www/html/
