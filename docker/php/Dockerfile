@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:7.4-fpm as scratch
 
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
@@ -24,9 +24,13 @@ RUN composer global require hirak/prestissimo
 
 ENV COMPOSER_MEMORY_LIMIT=-1
 
+FROM scratch as dev
 ENV PROMPT_COMMAND="history -a"
 ENV HISTTIMEFORMAT="%h %d %H:%M:%S "
 ENV HISTFILESIZE=20000
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+
+FROM scratch as prod
+COPY ./* /var/www/html/
