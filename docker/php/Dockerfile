@@ -34,3 +34,4 @@ ENV LANGUAGE en_US.UTF-8
 
 FROM scratch as prod
 COPY ./ /var/www/html/
+RUN composer install --no-interaction
