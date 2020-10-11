@@ -1,21 +1,39 @@
+#kind: pipeline
+#name: default
+#
+#steps:
+#  - name: build php docker
+#    image: plugins/docker
+#    settings:
+#      username:
+#        from_secret: docker_username
+#      password:
+#        from_secret: docker_password
+#      repo: ivanpopov/online-cource-empty
+#      dockerfile: docker/php/Dockerfile
+#
+#  - name: simple check
+#    image: ivanpopov/online-cource-empty
+#    commands:
+#      - composer install
+#      - composer validate
+#      - vendor/bin/php-cs-fixer fix --dry-run
+#      - bin/console ca:cl
+#---
 kind: pipeline
+type: exec
 name: default
 
-steps:
-  - name: build php docker
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      repo: ivanpopov/online-cource-empty
-      dockerfile: docker/php/Dockerfile
+platform:
+  os: linux
+  arch: amd64
 
-  - name: install dependencies
-    image: ivanpopov/online-cource-empty
+steps:
+  - name: greeting
     commands:
-      - composer install
+      - echo hello world
+      - docker build --no-cache -t online_cource:${DRONE_COMMIT} -f docker/php/Dockerfile .
+
 #
 #volumes:
 #  - name: dockersock
